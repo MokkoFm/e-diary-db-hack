@@ -17,6 +17,7 @@ from datacenter.models import Chastisement
 from datacenter.models import Mark
 import random
 from django.core.exceptions import ObjectDoesNotExist
+from django.shortcuts import get_object_or_404
 ```
 
 ## 1. Исправить оценки, убрать жалобы, добавить похвалу от учителя  
@@ -31,7 +32,7 @@ from django.core.exceptions import ObjectDoesNotExist
 ```
 def main():
     schoolboy_name = "Фролов Иван Григорьевич"
-    schoolkid = Schoolkid.objects.get(full_name=schoolboy_name)
+    schoolkid = get_object_or_404(Schoolkid, full_name=schoolboy_name)
     subject = "Математика"
     commendations = [
         "Молодец!",
@@ -63,7 +64,7 @@ def fix_marks(schoolkid):
 ```
 def main():
     schoolboy_name = "Фролов Иван Григорьевич"
-    schoolkid = Schoolkid.objects.get(full_name=schoolboy_name)
+    schoolkid = get_object_or_404(Schoolkid, full_name=schoolboy_name)
     subject = "Математика"
     commendations = [
         "Молодец!",

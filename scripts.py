@@ -7,7 +7,6 @@ from datacenter.models import Chastisement
 from datacenter.models import Mark
 import random
 from django.core.exceptions import ObjectDoesNotExist
-from django.http import Http404
 from django.shortcuts import get_object_or_404
 
 
