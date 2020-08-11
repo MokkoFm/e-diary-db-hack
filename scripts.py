@@ -16,7 +16,8 @@ def create_commendation(schoolkid, subject, commendations):
     date = lesson.date
     teacher = lesson.teacher
     subject = lesson.subject
-    Commendation.objects.create(text=random.choice(commendations), created=date, schoolkid=schoolkid, subject=subject, teacher=teacher)
+    Commendation.objects.create(text=random.choice(
+        commendations), created=date, schoolkid=schoolkid, subject=subject, teacher=teacher)
 
 
 def remove_chastisements(schoolkid):
