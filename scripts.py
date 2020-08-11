@@ -7,16 +7,17 @@ from datacenter.models import Chastisement
 from datacenter.models import Mark
 import random
 from django.core.exceptions import ObjectDoesNotExist
+from django.http import Http404
+from django.shortcuts import get_object_or_404
 
 
-def create_commendation(schoolkid, subject):
+def create_commendation(schoolkid, subject, commendations):
     lesson = Lesson.objects.filter(
         year_of_study=6, group_letter="А", subject__title__contains=subject).order_by('date').first()
     date = lesson.date
     teacher = lesson.teacher
     subject = lesson.subject
-    new_commendation = Commendation.objects.create(text=random.choice(
-        commendations), created=date, schoolkid=schoolkid, subject=subject, teacher=teacher)
+    Commendation.objects.create(text=random.choice(commendations), created=date, schoolkid=schoolkid, subject=subject, teacher=teacher)
 
 
 def remove_chastisements(schoolkid):
@@ -33,8 +34,9 @@ def fix_marks(schoolkid):
 
 def main():
     schoolboy_name = "Фролов Иван Григорьевич"
-    schoolkid = Schoolkid.objects.get(full_name=schoolboy_name)
+    schoolkid = get_object_or_404(Schoolkid, full_name=schoolboy_name)
     subject = "Математика"
+
     commendations = [
         "Молодец!",
         "Отлично!",
@@ -69,15 +71,15 @@ def main():
     ]
 
     try:
-        create_commendation(schoolkid, subject)
+        create_commendation(schoolkid, subject, commendations)
         remove_chastisements(schoolkid)
         fix_marks(schoolkid)
 
     except ObjectDoesNotExist:
-        print('Введи корректное имя школьника!')
+        raise Http404('Введи корректное имя школьника!')
 
     except AttributeError:
-        print('Введи корректное название предмета!')
+        raise Http404('Введи корректное название предмета!')
 
 
 if __name__ == "__main__":
